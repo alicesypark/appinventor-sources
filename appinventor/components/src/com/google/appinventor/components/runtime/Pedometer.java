@@ -36,7 +36,7 @@ import android.util.Log;
  */
 @DesignerComponent(version = YaVersion.PEDOMETER_COMPONENT_VERSION,
                    description = "Component that can count steps.",
-                   category = ComponentCategory.INTERNAL,
+                   category = ComponentCategory.SENSORS,
                    nonVisible = true,
                    iconName = "images/pedometer.png")
 @SimpleObject
@@ -90,6 +90,16 @@ public class Pedometer extends AndroidNonvisibleComponent
   private boolean   statusMoving = false;
   private boolean   firstGpsReading = true;
 
+  private float   diffCutoff = 10;
+  private float   lastDiffValues[] = new float[3*2];
+  private float   scale[] = new float[2];
+  private float   yOffset;
+  private float   lastDirections[] = new float[3*2];
+  private float   lastExtremes[][] = { new float[3*2], new float[3*2] };
+  private float   lastDiff[] = new float[3*2];
+  private int     lastMatch = -1;
+  private int     stepCount = 0;
+
   /** Constructor. */
   public Pedometer(ComponentContainer container) {
     super(container.$form());
@@ -120,6 +130,11 @@ public class Pedometer extends AndroidNonvisibleComponent
     numStepsWithFilter = numStepsRaw;
     startTime = System.currentTimeMillis();
     Log.d(TAG, "Pedometer Created");
+
+    int h = 480;
+    yOffset = h * 0.5f;
+    scale[0] = - (h * 0.5f * (1.0f / (SensorManager.STANDARD_GRAVITY * 2)));
+    scale[1] = - (h * 0.5f * (1.0f / (SensorManager.MAGNETIC_FIELD_EARTH_MAX)));
   }
 
   // Simple functions
@@ -161,6 +176,7 @@ public class Pedometer extends AndroidNonvisibleComponent
     calibrateSteps = false;
     prevStopClockTime = 0;
     startTime = System.currentTimeMillis();
+    stepCount = 0;
   }
 
   /**
@@ -424,60 +440,6 @@ public class Pedometer extends AndroidNonvisibleComponent
     }
   }
 
-  /**
-   * Finds average of the last NUM_INTERVALS number of step intervals
-   * and checks if they are roughly equally spaced.
-   */
-  private boolean areStepsEquallySpaced() {
-    float avg = 0;
-    int num = 0;
-    for (long interval : stepInterval) {
-      if (interval > 0) {
-        num++;
-        avg += interval;
-      }
-    }
-    avg = avg / num;
-    for (long interval : stepInterval) {
-      if (Math.abs(interval - avg) > INTERVAL_VARIATION) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
-   * Checks if the current middle of the window is the local peak.
-   * TODO(user): Combine getPeak and getValley into one method.
-   */
-  private void getPeak() {
-    int mid = (winPos + WIN_SIZE / 2) % WIN_SIZE;
-    for (int k = 0; k < DIMENSIONS; k++) {
-      peak[k] = mid;
-      for (int i = 0; i < WIN_SIZE; i++) {
-        if (i != mid && lastValues[i][k] >= lastValues[mid][k]) {
-          peak[k] = -1;
-          break;
-        }
-      }
-    }
-  }
-
-  /**
-   * Checks if the current middle of the window is the local valley.
-   */
-  private void getValley() {
-    int mid = (winPos + WIN_SIZE / 2) % WIN_SIZE;
-    for (int k = 0; k < DIMENSIONS; k++) {
-      valley[k] = mid;
-      for (int i = 0; i < WIN_SIZE; i++) {
-        if (i != mid && lastValues[i][k] <= lastValues[mid][k]) {
-          valley[k] = -1;
-          break;
-        }
-      }
-    }
-  }
 
   private void setGpsAvailable(boolean available) {
     if (!gpsAvailable && available) {
@@ -498,91 +460,54 @@ public class Pedometer extends AndroidNonvisibleComponent
 
   @Override
   public void onSensorChanged(SensorEvent event) {
-    if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
-      return;
-    }
-    float[] values = event.values;
-    // Check if the middle reading within the current window represents
-    // a peak/valley.
-    if (startPeaking) {
-      getPeak();
-      getValley();
-    }
-    // Find largest peak-valley range amongst the three
-    // accelerometer axis
-    int argmax = prevDiff[0] > prevDiff[1] ? 0 : 1;
-    argmax = prevDiff[2] > prevDiff[argmax] ? 2 : argmax;
-    // Process each of the X, Y and Z accelerometer axis values
-    for (int k = 0; k < DIMENSIONS; k++) {
-      // Peak is detected
-      if (startPeaking && peak[k] >= 0) {
-        if (foundValley[k] &&
-            lastValues[peak[k]][k] - lastValley[k] > PEAK_VALLEY_RANGE) {
-          // Step detected on axis k with maximum peak-valley range.
-          if (argmax == k) {
-            long timestamp = System.currentTimeMillis();
-            stepInterval[intervalPos] = timestamp - stepTimestamp;
-            intervalPos = (intervalPos + 1) % NUM_INTERVALS;
-            stepTimestamp = timestamp;
-            if (areStepsEquallySpaced()) {
-              if (foundNonStep) {
-                numStepsWithFilter += NUM_INTERVALS;
-                if (!gpsAvailable) {
-                  totalDistance += strideLength * NUM_INTERVALS;
-                }
-                foundNonStep = false;
-              }
-              numStepsWithFilter++;
-              WalkStep(numStepsWithFilter, totalDistance);
-              if (!gpsAvailable) {
-                totalDistance += strideLength;
-              }
-            } else {
-              foundNonStep = true;
-            }
-            numStepsRaw++;
-            SimpleStep(numStepsRaw, totalDistance);
-            if (!statusMoving) {
-              statusMoving = true;
-              StartedMoving();
-            }
+    Sensor sensor = event.sensor;
+    synchronized (this) {
+      if (sensor.getType() == Sensor.TYPE_ORIENTATION) {
+      }
+      else {
+        int j = (sensor.getType() == Sensor.TYPE_ACCELEROMETER) ? 1 : 0;
+        if (j == 1) {
+          float vSum = 0;
+          for (int i=0 ; i<3 ; i++) {
+            final float v = yOffset + event.values[i] * scale[j];
+            vSum += v;
           }
-          foundValley[k] = false;
-          prevDiff[k] = lastValues[peak[k]][k] - lastValley[k];
-        } else {
-          prevDiff[k] = 0;
+          int k = 0;
+          float v = vSum / 3;
+
+          float direction = (v > lastDiffValues[k] ? 1 : (v < lastDiffValues[k] ? -1 : 0));
+          if (direction == - lastDirections[k]) {
+            // Direction changed
+            int extType = (direction > 0 ? 0 : 1); // minumum or maximum?
+            lastExtremes[extType][k] = lastDiffValues[k];
+            float diff = Math.abs(lastExtremes[extType][k] - lastExtremes[1 - extType][k]);
+
+            if (diff > diffCutoff) {
+
+              boolean isAlmostAsLargeAsPrevious = diff > (lastDiff[k]*2/3);
+              boolean isPreviousLargeEnough = lastDiff[k] > (diff/3);
+              boolean isNotContra = (lastMatch != 1 - extType);
+
+              if (isAlmostAsLargeAsPrevious && isPreviousLargeEnough && isNotContra) {
+                lastMatch = extType;
+                stepCount++;
+                if (!useGps) {
+                  totalDistance += strideLength;
+                }
+//                totalDistance = stepCount * strideLength;
+                SimpleStep(stepCount, totalDistance);
+              }
+              else {
+                lastMatch = -1;
+              }
+            }
+            lastDiff[k] = diff;
+          }
+          lastDirections[k] = direction;
+          lastDiffValues[k] = v;
         }
       }
-      // Valley is detected
-      if (startPeaking && valley[k] >= 0) {
-        foundValley[k] = true;
-        lastValley[k] = lastValues[valley[k]][k];
-      }
-      // Store latest accelerometer reading in the window.
-      lastValues[winPos][k] = values[k];
     }
-    elapsedTimestamp = System.currentTimeMillis();
-    if (elapsedTimestamp - stepTimestamp > stopDetectionTimeout) {
-      if (statusMoving) {
-        statusMoving = false;
-        StoppedMoving();
-      }
-      stepTimestamp = elapsedTimestamp;
-    }
-    // Force inequality with previous value. This helps with better
-    // peak/valley detection.
-    int prev = winPos - 1 < 0 ? WIN_SIZE - 1 : winPos - 1;
-    for (int k = 0; k < DIMENSIONS; k++) {
-      if (lastValues[prev][k] == lastValues[winPos][k]) {
-        lastValues[winPos][k] += 0.001;
-      }
-    }
-    // Once the buffer is full, start peak/valley detection.
-    if (winPos == WIN_SIZE - 1 && !startPeaking) {
-      startPeaking = true;
-    }
-    // Increment position within the window.
-    winPos = (winPos + 1) % WIN_SIZE;
   }
 
   // LocationListener implementation
