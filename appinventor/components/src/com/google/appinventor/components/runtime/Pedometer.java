@@ -35,26 +35,24 @@ import android.util.Log;
  *
  */
 @DesignerComponent(version = YaVersion.PEDOMETER_COMPONENT_VERSION,
-                   description = "Component that can count steps.",
-                   category = ComponentCategory.SENSORS,
-                   nonVisible = true,
-                   iconName = "images/pedometer.png")
+        description = "Component that can count steps.",
+        category = ComponentCategory.SENSORS,
+        nonVisible = true,
+        iconName = "images/pedometer.png")
 @SimpleObject
 @UsesPermissions(permissionNames = "android.permission.ACCESS_FINE_LOCATION")
 public class Pedometer extends AndroidNonvisibleComponent
-    implements Component, LocationListener, SensorEventListener, Deleteable {
+        implements Component, LocationListener, SensorEventListener, Deleteable {
   private static final String TAG = "Pedometer";
   private static final String PREFS_NAME = "PedometerPrefs";
 
-  private static final int DIMENSIONS = 3;
   private static final int INTERVAL_VARIATION = 250;
   private static final int NUM_INTERVALS = 2;
-  private static final int WIN_SIZE = 20;
-  private static final int MIN_SATELLITES = 4;
+  private static final int WIN_SIZE = 100;
   private static final float STRIDE_LENGTH = (float) 0.73;
-  private static final float PEAK_VALLEY_RANGE = (float) 4.0;
+  private static final float PEAK_VALLEY_RANGE = (float) 40.0;
 
-  private final Context context;;
+  private final Context context;
   private final SensorManager sensorManager;
   private final LocationManager locationManager;
 
@@ -66,21 +64,16 @@ public class Pedometer extends AndroidNonvisibleComponent
   private int       winPos = 0, intervalPos = 0;
   private int       numStepsWithFilter = 0, numStepsRaw = 0;
   private int       lastNumSteps = 0;
-  private int[]     peak = new int[DIMENSIONS];
-  private int[]     valley = new int[DIMENSIONS];
-  private float[]   lastValley = new float[DIMENSIONS];
-  private float[][] lastValues = new float[WIN_SIZE][DIMENSIONS];
-  private float[]   prevDiff = new float[DIMENSIONS];
+  private float     lastValley = 0;
+  private float[]   lastValues = new float[WIN_SIZE];
   private float     strideLength = STRIDE_LENGTH;
   private float     totalDistance = 0;
   private float     distWhenGPSLost = 0;
   private float     gpsDistance = 0;
   private long[]    stepInterval = new long[NUM_INTERVALS];
   private long      stepTimestamp = 0;
-  private long      elapsedTimestamp = 0;
   private long      startTime = 0, prevStopClockTime = 0;
-  private long      gpsStepTime = 0;
-  private boolean[] foundValley = new boolean[DIMENSIONS];
+  private boolean   foundValley = false;
   private boolean   startPeaking = false;
   private boolean   foundNonStep = true;
   private boolean   gpsAvailable = false;
@@ -90,15 +83,8 @@ public class Pedometer extends AndroidNonvisibleComponent
   private boolean   statusMoving = false;
   private boolean   firstGpsReading = true;
 
-  private float   diffCutoff = 10;
-  private float   lastDiffValues[] = new float[3*2];
-  private float   scale[] = new float[2];
-  private float   yOffset;
-  private float   lastDirections[] = new float[3*2];
-  private float   lastExtremes[][] = { new float[3*2], new float[3*2] };
-  private float   lastDiff[] = new float[3*2];
-  private int     lastMatch = -1;
-  private int     stepCount = 0;
+  private float[] avgWindow = new float[10];
+  private int avgPos = 0;
 
   /** Constructor. */
   public Pedometer(ComponentContainer container) {
@@ -113,10 +99,9 @@ public class Pedometer extends AndroidNonvisibleComponent
     firstGpsReading = true;
     gpsDistance = 0;
 
-    for (int i = 0; i < DIMENSIONS; i++) {
-      foundValley[i] = true;
-      lastValley[i] = 0;
-    }
+    foundValley = true;
+    lastValley = 0;
+
     sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
@@ -130,11 +115,6 @@ public class Pedometer extends AndroidNonvisibleComponent
     numStepsWithFilter = numStepsRaw;
     startTime = System.currentTimeMillis();
     Log.d(TAG, "Pedometer Created");
-
-    int h = 480;
-    yOffset = h * 0.5f;
-    scale[0] = - (h * 0.5f * (1.0f / (SensorManager.STANDARD_GRAVITY * 2)));
-    scale[1] = - (h * 0.5f * (1.0f / (SensorManager.MAGNETIC_FIELD_EARTH_MAX)));
   }
 
   // Simple functions
@@ -147,8 +127,8 @@ public class Pedometer extends AndroidNonvisibleComponent
     if (pedometerPaused) {
       pedometerPaused = false;
       sensorManager.registerListener(this,
-          sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0),
-          SensorManager.SENSOR_DELAY_FASTEST);
+              sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0),
+              SensorManager.SENSOR_DELAY_FASTEST);
       startTime = System.currentTimeMillis();
     }
   }
@@ -176,7 +156,6 @@ public class Pedometer extends AndroidNonvisibleComponent
     calibrateSteps = false;
     prevStopClockTime = 0;
     startTime = System.currentTimeMillis();
-    stepCount = 0;
   }
 
   /**
@@ -216,7 +195,7 @@ public class Pedometer extends AndroidNonvisibleComponent
       editor.putLong("Pedometer.clockTime", prevStopClockTime);
     } else {
       editor.putLong("Pedometer.clockTime", prevStopClockTime +
-          (System.currentTimeMillis() - startTime));
+              (System.currentTimeMillis() - startTime));
     }
     editor.putLong("Pedometer.closeTime", System.currentTimeMillis());
     editor.commit();
@@ -290,6 +269,16 @@ public class Pedometer extends AndroidNonvisibleComponent
     EventDispatcher.dispatchEvent(this, "GPSLost");
   }
 
+  /**
+   * Called whenever the accelerometer value updates.
+   *
+   * @param magnitude the smoothed magnitude value used for step detection
+   */
+  @SimpleEvent(description = "This event is run when the accelerometer provides a reading")
+  public void MagnitudeChanged(float magnitude) {
+    EventDispatcher.dispatchEvent(this, "MagnitudeChanged", magnitude);
+  }
+
   // Properties
 
   /**
@@ -297,9 +286,9 @@ public class Pedometer extends AndroidNonvisibleComponent
    * of steps with the ditance covered (using the GPS).
    */
   @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-      defaultValue = "true")
+          defaultValue = "true")
   @SimpleProperty(
-      category = PropertyCategory.BEHAVIOR)
+          category = PropertyCategory.BEHAVIOR)
   public void CalibrateStrideLength(boolean cal) {
     if (!gpsAvailable && cal) {
       CalibrationFailed();
@@ -330,9 +319,9 @@ public class Pedometer extends AndroidNonvisibleComponent
    * @param length is the stride length in meters.
    */
   @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_NON_NEGATIVE_FLOAT,
-      defaultValue = "0.73")
+          defaultValue = "0.73")
   @SimpleProperty(
-      category = PropertyCategory.BEHAVIOR)
+          category = PropertyCategory.BEHAVIOR)
   public void StrideLength(float length) {
     CalibrateStrideLength(false);
     strideLength = length;
@@ -355,9 +344,9 @@ public class Pedometer extends AndroidNonvisibleComponent
    * @param timeout the timeout in milliseconds.
    */
   @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_NON_NEGATIVE_INTEGER,
-      defaultValue = "2000")
+          defaultValue = "2000")
   @SimpleProperty(
-      category = PropertyCategory.BEHAVIOR)
+          category = PropertyCategory.BEHAVIOR)
   public void StopDetectionTimeout(int timeout) {
     stopDetectionTimeout = timeout;
   }
@@ -380,15 +369,15 @@ public class Pedometer extends AndroidNonvisibleComponent
    *            {@code false} disables GPS
    */
   @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-      defaultValue = "true")
+          defaultValue = "true")
   @SimpleProperty(
-      category = PropertyCategory.BEHAVIOR)
+          category = PropertyCategory.BEHAVIOR)
   public void UseGPS(boolean gps) {
     if (!gps && useGps) {
       locationManager.removeUpdates(this);
     } else if (gps && !useGps) {
       locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-          0, 0, this);
+              0, 0, this);
     }
     useGps = gps;
   }
@@ -409,7 +398,7 @@ public class Pedometer extends AndroidNonvisibleComponent
    * @return approximate distance traveled in meters.
    */
   @SimpleProperty(
-      category = PropertyCategory.BEHAVIOR)
+          category = PropertyCategory.BEHAVIOR)
   public float Distance() {
     return totalDistance;
   }
@@ -420,7 +409,7 @@ public class Pedometer extends AndroidNonvisibleComponent
    * @return {@code true} if moving, {@code false} otherwise.
    */
   @SimpleProperty(
-      category = PropertyCategory.BEHAVIOR)
+          category = PropertyCategory.BEHAVIOR)
   public boolean Moving() {
     return statusMoving;
   }
@@ -431,7 +420,7 @@ public class Pedometer extends AndroidNonvisibleComponent
    * @return time elapsed in milliseconds since the pedometer was started.
    */
   @SimpleProperty(
-      category = PropertyCategory.BEHAVIOR)
+          category = PropertyCategory.BEHAVIOR)
   public long ElapsedTime() {
     if (pedometerPaused) {
       return prevStopClockTime;
@@ -440,6 +429,53 @@ public class Pedometer extends AndroidNonvisibleComponent
     }
   }
 
+  /**
+   * Finds average of the last NUM_INTERVALS number of step intervals
+   * and checks if they are roughly equally spaced.
+   */
+  private boolean areStepsEquallySpaced() {
+    float avg = 0;
+    int num = 0;
+    for (long interval : stepInterval) {
+      if (interval > 0) {
+        num++;
+        avg += interval;
+      }
+    }
+    avg = avg / num;
+    for (long interval : stepInterval) {
+      if (Math.abs(interval - avg) > INTERVAL_VARIATION) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Checks if the current middle of the window is the local peak.
+   */
+  private boolean isPeak() {
+    int mid = (winPos + WIN_SIZE / 2) % WIN_SIZE;
+    for (int i = 0; i < WIN_SIZE; i++) {
+      if (i != mid && lastValues[i] > lastValues[mid]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Checks if the current middle of the window is the local peak.
+   */
+  private boolean isValley() {
+    int mid = (winPos + WIN_SIZE / 2) % WIN_SIZE;
+    for (int i = 0; i < WIN_SIZE; i++) {
+      if (i != mid && lastValues[i] < lastValues[mid]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   private void setGpsAvailable(boolean available) {
     if (!gpsAvailable && available) {
@@ -460,54 +496,86 @@ public class Pedometer extends AndroidNonvisibleComponent
 
   @Override
   public void onSensorChanged(SensorEvent event) {
-    Sensor sensor = event.sensor;
-    synchronized (this) {
-      if (sensor.getType() == Sensor.TYPE_ORIENTATION) {
-      }
-      else {
-        int j = (sensor.getType() == Sensor.TYPE_ACCELEROMETER) ? 1 : 0;
-        if (j == 1) {
-          float vSum = 0;
-          for (int i=0 ; i<3 ; i++) {
-            final float v = yOffset + event.values[i] * scale[j];
-            vSum += v;
-          }
-          int k = 0;
-          float v = vSum / 3;
+    if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
+      return;
+    }
+    float[] values = event.values;
+    float magnitude = 0;
+    for (float v : values) magnitude += v * v;
+    // Check if the middle reading within the current window represents
+    // a peak/valley.
+    int mid = (winPos + WIN_SIZE / 2) % WIN_SIZE;
 
-          float direction = (v > lastDiffValues[k] ? 1 : (v < lastDiffValues[k] ? -1 : 0));
-          if (direction == - lastDirections[k]) {
-            // Direction changed
-            int extType = (direction > 0 ? 0 : 1); // minumum or maximum?
-            lastExtremes[extType][k] = lastDiffValues[k];
-            float diff = Math.abs(lastExtremes[extType][k] - lastExtremes[1 - extType][k]);
-
-            if (diff > diffCutoff) {
-
-              boolean isAlmostAsLargeAsPrevious = diff > (lastDiff[k]*2/3);
-              boolean isPreviousLargeEnough = lastDiff[k] > (diff/3);
-              boolean isNotContra = (lastMatch != 1 - extType);
-
-              if (isAlmostAsLargeAsPrevious && isPreviousLargeEnough && isNotContra) {
-                lastMatch = extType;
-                stepCount++;
-                if (!useGps) {
-                  totalDistance += strideLength;
-                }
-//                totalDistance = stepCount * strideLength;
-                SimpleStep(stepCount, totalDistance);
-              }
-              else {
-                lastMatch = -1;
-              }
+    // Peak is detected
+    if (startPeaking && isPeak()) {
+      if (foundValley && lastValues[mid] - lastValley > PEAK_VALLEY_RANGE) {
+        // Step detected on axis k with maximum peak-valley range.
+        long timestamp = System.currentTimeMillis();
+        stepInterval[intervalPos] = timestamp - stepTimestamp;
+        intervalPos = (intervalPos + 1) % NUM_INTERVALS;
+        stepTimestamp = timestamp;
+        if (areStepsEquallySpaced()) {
+          if (foundNonStep) {
+            numStepsWithFilter += NUM_INTERVALS;
+            if (!gpsAvailable) {
+              totalDistance += strideLength * NUM_INTERVALS;
             }
-            lastDiff[k] = diff;
+            foundNonStep = false;
           }
-          lastDirections[k] = direction;
-          lastDiffValues[k] = v;
+          numStepsWithFilter++;
+          WalkStep(numStepsWithFilter, totalDistance);
+          if (!gpsAvailable) {
+            totalDistance += strideLength;
+          }
+        } else {
+          foundNonStep = true;
         }
+        numStepsRaw++;
+        SimpleStep(numStepsRaw, totalDistance);
+        if (!statusMoving) {
+          statusMoving = true;
+          StartedMoving();
+        }
+        foundValley = false;
       }
     }
+    // Valley is detected
+    if (startPeaking && isValley()) {
+      foundValley = true;
+      lastValley = lastValues[mid];
+    }
+    // Store latest accelerometer reading in the window.
+    avgWindow[avgPos] = magnitude;
+    avgPos = (avgPos + 1) % avgWindow.length;
+    lastValues[winPos] = 0;
+    for (float m : avgWindow) lastValues[winPos] += m;
+    lastValues[winPos] /= avgWindow.length;
+    if (startPeaking || winPos > 1) {
+      int i = winPos;
+      if (--i < 0) i += WIN_SIZE;
+      lastValues[winPos] += 2 * lastValues[i];
+      if (--i < 0) i += WIN_SIZE;
+      lastValues[winPos] += lastValues[i];
+      lastValues[winPos] /= 4;
+    } else if (!startPeaking && winPos == 1) {
+      lastValues[1] = (lastValues[1] + lastValues[0]) / 2f;
+    }
+    MagnitudeChanged(lastValues[winPos]);
+
+    long elapsedTimestamp = System.currentTimeMillis();
+    if (elapsedTimestamp - stepTimestamp > stopDetectionTimeout) {
+      if (statusMoving) {
+        statusMoving = false;
+        StoppedMoving();
+      }
+      stepTimestamp = elapsedTimestamp;
+    }
+    // Once the buffer is full, start peak/valley detection.
+    if (winPos == WIN_SIZE - 1 && !startPeaking) {
+      startPeaking = true;
+    }
+    // Increment position within the window.
+    winPos = (winPos + 1) % WIN_SIZE;
   }
 
   // LocationListener implementation
@@ -535,11 +603,10 @@ public class Pedometer extends AndroidNonvisibleComponent
     } else {
       if (locationWhenGPSLost != null) {
         float distDarkness =
-            currentLocation.distanceTo(locationWhenGPSLost);
+                currentLocation.distanceTo(locationWhenGPSLost);
         totalDistance = distWhenGPSLost +
-            (distDarkness + (totalDistance - distWhenGPSLost)) / 2;
+                (distDarkness + (totalDistance - distWhenGPSLost)) / 2;
       }
-      gpsStepTime = System.currentTimeMillis();
       prevLocation = currentLocation;
     }
     if (calibrateSteps) {
