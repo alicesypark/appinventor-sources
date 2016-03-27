@@ -1,0 +1,28 @@
+<component name="libraryTable">
+  <library name="dexCache">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-5c3dfb562d5c95e5c104910b7bd5491f.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-b03e09cae196efc1b0c0b3794f51c326.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-ee3d34dce4a30c7d3002cadf8c9172c1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-ac4cf27497116ecf2b530b9d7975ec0b.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-fbf7ab0c9b916db206cf33159e31edbe.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-9161ee85b347afd51b880dcb15ce045c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-5afa64929f2a5ae21b3f4e662c5134b9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-b11cd2674a01c826bef59ca013d25d1b.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-25f0fdc2247663ae3fb9cb01b0c45b30.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-58553f87d83b9f8ec74bd3529083ee2f.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-948fcafe736a58d0bb4f7d0a4e2bcfc4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-3648c2fb06d9e76cefd3f3278962f3d6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-ad05fece994ad86db1c108037537b1a6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-1e7d8f511de4b91fc404f18ad21af157.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-0109d37c2d5a00526bd36e92e9cbe7af.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-34183dd13eefd80bd93dbefb2cca2c89.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-3dbee72667f107b4f76f2d5aa33c5687.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-9a0bee400fbba48cea726f34474b674d.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-fc9775195343f2faba13e432679efe9f.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/buildserver/dexCache/dex-cached-8ca2437d3dbbaa2e76195adedfd901f4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

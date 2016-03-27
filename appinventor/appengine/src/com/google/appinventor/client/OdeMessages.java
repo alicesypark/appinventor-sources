@@ -115,8 +115,8 @@ public interface OdeMessages extends Messages {
   String connectButton();
 
   @DefaultMessage("Deleting this screen will completely remove the screen from your project. " +
-          "All components and blocks associated with this screen will be deleted.\n" +
-          "There is no undo.\nAre you sure you want to delete {0}?")
+      "All components and blocks associated with this screen will be deleted.\n" +
+      "There is no undo.\nAre you sure you want to delete {0}?")
   @Description("Confirmation query for removing a screen")
   String reallyDeleteForm(String formName);
 
@@ -827,9 +827,9 @@ public interface OdeMessages extends Messages {
   String renameTitle();
 
   @DefaultMessage("Component names can contain only letters, numbers, and underscores and " +
-          "must start with a letter")
+      "must start with a letter")
   @Description("Error message when component name contains non-alphanumeric characters besides _ " +
-          "or does not start with a letter")
+      "or does not start with a letter")
   String malformedComponentNameError();
 
   @DefaultMessage("Duplicate component name!")
@@ -841,14 +841,14 @@ public interface OdeMessages extends Messages {
   String sameAsComponentTypeNameError();
 
   @DefaultMessage("Component name cannot be any of the following: CsvUtil, Double, Float, " +
-          "Integer, JavaCollection, JavaIterator, KawaEnvironment, Long, Short, SimpleForm, String, " +
-          "Pattern, YailList, YailNumberToString, YailRuntimeError")
+      "Integer, JavaCollection, JavaIterator, KawaEnvironment, Long, Short, SimpleForm, String, " +
+      "Pattern, YailList, YailNumberToString, YailRuntimeError")
   @Description("Error shown when a new component name is a variable name already used in the" +
-          "Yail code")
+      "Yail code")
   String badComponentNameError();
 
   @DefaultMessage("Deleting this component will delete all blocks associated with it in the " +
-          "Blocks Editor. Are you sure you want to delete?")
+      "Blocks Editor. Are you sure you want to delete?")
   @Description("Confirmation query for removing a component")
   String reallyDeleteComponent();
 
@@ -911,7 +911,7 @@ public interface OdeMessages extends Messages {
   String blocksNotSaved(String formName);
 
   @DefaultMessage("The blocks for screen {0} did not load properly. "
-          + "You will not be able to edit using the blocks editor until the problem is corrected.")
+      + "You will not be able to edit using the blocks editor until the problem is corrected.")
   @Description("Message when blocks fail to load properly")
   String blocksLoadFailure(String formName);
 
@@ -1210,14 +1210,14 @@ public interface OdeMessages extends Messages {
   String formNameLabel();
 
   @DefaultMessage("WARNING: The number of screens in this app might exceed the limits of App Inventor. " +
-          "Click <a target=\"_blank\" href=\"/reference/other/manyscreens.html\">here</a> for advice about " +
-          "creating apps with many screens. " +
-          "<p>Do you really want to add another screen?</p>")
+                  "Click <a target=\"_blank\" href=\"/reference/other/manyscreens.html\">here</a> for advice about " +
+                  "creating apps with many screens. " +
+                  "<p>Do you really want to add another screen?</p>")
   @Description("Label to indicate the application has too many screens.")
   String formCountErrorLabel();
 
   @DefaultMessage("Screen names can contain only letters, numbers, and underscores and must " +
-          "start with a letter")
+      "start with a letter")
   @Description("Error message when form name contains non-alphanumeric characters besides _")
   String malformedFormNameError();
 
@@ -1238,7 +1238,7 @@ public interface OdeMessages extends Messages {
 
   @DefaultMessage("Server error: could not build target. Please try again later!")
   @Description("Error message reported when building a target failed on the server because of a " +
-          "network error.")
+      "network error.")
   String buildError();
 
   @DefaultMessage("Build failed!")
@@ -1247,12 +1247,12 @@ public interface OdeMessages extends Messages {
 
   @DefaultMessage("The build server is currently busy. Please try again in a few minutes.")
   @Description("Error message reported when the build server is temporarily too busy to accept " +
-          "a build request.")
+      "a build request.")
   String buildServerBusyError();
 
   @DefaultMessage("The build server is not compatible with this version of App Inventor.")
   @Description("Error message reported when the build server is running a different version of " +
-          "the App Inventor code.")
+      "the App Inventor code.")
   String buildServerDifferentVersion();
 
   @DefaultMessage("Unable to generate code for {0}.")
@@ -1302,8 +1302,8 @@ public interface OdeMessages extends Messages {
   // Used in explorer/commands/DeleteFileCommand.java
 
   @DefaultMessage("Do you really want to delete this file?  It will be removed from " +
-          "the App Inventor server.  Also, parts of your application may still refer to the deleted " +
-          "file, and you will need to change these.")
+      "the App Inventor server.  Also, parts of your application may still refer to the deleted " +
+      "file, and you will need to change these.")
   @Description("Confirmation message that will be shown before deleting a file")
   String reallyDeleteFile();
 
@@ -1315,7 +1315,7 @@ public interface OdeMessages extends Messages {
 
   @DefaultMessage("The phone is not connected.")
   @Description("Error message displayed when the user wants to download a project to the phone, " +
-          "but the phone is not connected.")
+      "but the phone is not connected.")
   String phoneNotConnected();
 
   // Used in explorer/commands/ShowBarcodeCommand.java
@@ -1325,7 +1325,7 @@ public interface OdeMessages extends Messages {
   String barcodeTitle(String projectName);
 
   @DefaultMessage("Note: this barcode is only valid for 2 hours. See {0} the FAQ {1} for info " +
-          "on how to share your app with others.")
+      "on how to share your app with others.")
   @Description("Warning in barcode dialog.")
   String barcodeWarning(String aTagStart, String aTagEnd);
 
@@ -1339,13 +1339,13 @@ public interface OdeMessages extends Messages {
 
   @DefaultMessage("Server error: could not retrieve project information. Please try again later!")
   @Description("Error message reported when information about projects could not be retrieved " +
-          "from the server.")
+      "from the server.")
   String projectInformationRetrievalError();
 
   // Used in explorer/youngandroid/Toolbar.java
 
   @DefaultMessage("It may take a little while for your projects to be downloaded. " +
-          "Please be patient...")
+      "Please be patient...")
   @Description("Warning that downloading projects will take a while")
   String downloadAllAlert();
 
@@ -1366,10 +1366,10 @@ public interface OdeMessages extends Messages {
   String projectIdLabel();
 
   @DefaultMessage("Please specify both a user email address or id and a project name or id " +
-          "for the project to be downloaded. Ids are numeric and may come from the system " +
-          "logs or from browsing the Datastore. If you use an email address, it must match " +
-          "exactly the stored email address in the Datastore. Similarly, project names must " +
-          "match exactly. Both are case sensitive.")
+      "for the project to be downloaded. Ids are numeric and may come from the system " +
+      "logs or from browsing the Datastore. If you use an email address, it must match " +
+      "exactly the stored email address in the Datastore. Similarly, project names must " +
+      "match exactly. Both are case sensitive.")
   @Description("Error message reported when user id or project id is missing")
   String invalidUserIdOrProjectIdError();
 
@@ -1382,7 +1382,7 @@ public interface OdeMessages extends Messages {
   String confirmDeleteSingleProject(String projectName);
 
   @DefaultMessage("Are you really sure you want to delete this project: {0}?"+
-          " Note that the published copy of this project will be removed from the gallery as well.")
+      " Note that the published copy of this project will be removed from the gallery as well.")
   @Description("Confirmation message for selecting a single project and clicking delete when gallery is on")
   String confirmDeleteSinglePublishedProject(String projectName);
 
@@ -1391,8 +1391,8 @@ public interface OdeMessages extends Messages {
   String confirmDeleteManyProjects(String projectNames);
 
   @DefaultMessage("Are you really sure you want to delete these projects: {0}?"+
-          " Note that if any of the projects have been published, the published version in"+
-          " the gallery will be removed as well.")
+      " Note that if any of the projects have been published, the published version in"+
+      " the gallery will be removed as well.")
   @Description("Confirmation message for selecting multiple projects and clicking delete when gallery is on")
   String confirmDeleteManyProjectsWithGalleryOn(String projectNames);
 
@@ -1421,16 +1421,16 @@ public interface OdeMessages extends Messages {
   String uploadKeystoreError();
 
   @DefaultMessage("Do you want to overwrite your keystore file?\n\n" +
-          "If you agree, your old keystore file will be completely removed from the App Inventor " +
-          "server.\n\n" +
-          "If you have published applications to the Google Play Store using the keystore you are " +
-          "about to overwrite, you will lose the ability to update your applications.\n\n" +
-          "Any projects that you package in the future will be signed using your new keystore file. " +
-          "Changing the keystore affects the ability to reinstall previously installed apps. If you " +
-          "are not sure that you want to do this, please read the documentation about keystores by " +
-          "clicking above on \"Help\", then \"Troubleshooting\", and then \"Keystores and Signing " +
-          "of Applications\"\n\n" +
-          "There is no undo for overwriting your keystore file.")
+      "If you agree, your old keystore file will be completely removed from the App Inventor " +
+      "server.\n\n" +
+      "If you have published applications to the Google Play Store using the keystore you are " +
+      "about to overwrite, you will lose the ability to update your applications.\n\n" +
+      "Any projects that you package in the future will be signed using your new keystore file. " +
+      "Changing the keystore affects the ability to reinstall previously installed apps. If you " +
+      "are not sure that you want to do this, please read the documentation about keystores by " +
+      "clicking above on \"Help\", then \"Troubleshooting\", and then \"Keystores and Signing " +
+      "of Applications\"\n\n" +
+      "There is no undo for overwriting your keystore file.")
   @Description("Confirmation message shown when keystore is about to be overwritten.")
   String confirmOverwriteKeystore();
 
@@ -1439,17 +1439,17 @@ public interface OdeMessages extends Messages {
   String deleteKeystoreError();
 
   @DefaultMessage("Do you really want to delete your keystore file?\n\n" +
-          "If you agree, your old keystore file will be completely removed from the App Inventor " +
-          "server. A new, but different, keystore file will be created automatically the next time " +
-          "you package a project for the phone.\n\n" +
-          "If you have published applications to the Google Play Store using the keystore you are " +
-          "about to delete, you will lose the ability to update your applications.\n\n" +
-          "Any projects that you package in the future will be signed using your new keystore file. " +
-          "Changing the keystore affects the ability to reinstall previously installed apps. If you " +
-          "are not sure that you want to do this, please read the documentation about keystores by " +
-          "clicking above on \"Help\", then \"Troubleshooting\", and then \"Keystores and Signing " +
-          "of Applications\"\n\n" +
-          "There is no undo for deleting your keystore file.")
+      "If you agree, your old keystore file will be completely removed from the App Inventor " +
+      "server. A new, but different, keystore file will be created automatically the next time " +
+      "you package a project for the phone.\n\n" +
+      "If you have published applications to the Google Play Store using the keystore you are " +
+      "about to delete, you will lose the ability to update your applications.\n\n" +
+      "Any projects that you package in the future will be signed using your new keystore file. " +
+      "Changing the keystore affects the ability to reinstall previously installed apps. If you " +
+      "are not sure that you want to do this, please read the documentation about keystores by " +
+      "clicking above on \"Help\", then \"Troubleshooting\", and then \"Keystores and Signing " +
+      "of Applications\"\n\n" +
+      "There is no undo for deleting your keystore file.")
   @Description("Confirmation message for delete keystore")
   String confirmDeleteKeystore();
 
@@ -1529,7 +1529,7 @@ public interface OdeMessages extends Messages {
   String fileUploadWizardCaption();
 
   @DefaultMessage("File names can contain only unaccented letters, numbers, and the characters " +
-          "\"-\", \"_\", \".\", \"!\", \"~\", \"*\", \"(\", and \")\"")
+      "\"-\", \"_\", \".\", \"!\", \"~\", \"*\", \"(\", and \")\"")
   @Description("Error message when file name contains characters that would require URL encoding.")
   String malformedFilename();
 
@@ -1554,10 +1554,10 @@ public interface OdeMessages extends Messages {
   String noFileSelected();
 
   @DefaultMessage("Request to save {1}" +
-          "\n\nA file named {0} already exists in this project." +
-          "\nDo you want to remove that old file?" +
-          "\nThis will also remove any other files whose " +
-          "names conflict with {1}.")
+      "\n\nA file named {0} already exists in this project." +
+      "\nDo you want to remove that old file?" +
+      "\nThis will also remove any other files whose " +
+      "names conflict with {1}.")
   @Description("Confirmation message shown when conflicting files are about to be deleted.")
   String confirmOverwrite(String newFile, String existingFile);
 
@@ -1699,9 +1699,9 @@ public interface OdeMessages extends Messages {
   String galleryMoreInfoHint();
 
   @DefaultMessage("By submitting an app in the gallery, you are publishing " +
-          "it under a <a href=\"https://creativecommons.org/licenses/by/4.0/\" " +
-          "target=\"_blank\">Creative Commons Attribution License</a>, and " +
-          "affirming that you have the authority to do so.")
+    "it under a <a href=\"https://creativecommons.org/licenses/by/4.0/\" " +
+    "target=\"_blank\">Creative Commons Attribution License</a>, and " +
+    "affirming that you have the authority to do so.")
   @Description("Reference to the Creative Commons License")
   String galleryCcLicenseRef();
 
@@ -1762,7 +1762,7 @@ public interface OdeMessages extends Messages {
   String galleryAppsRemixesSidebar();
 
   @DefaultMessage("Please explain why you feel this app is disrespectful or inappropriate, or otherwise breaks the <a href=\"http://google.com\">App Inventor Gallery Community Guidelines.</a> " +
-          "")
+      "")
   @Description("Prompt for the gallery app report section.")
   String galleryReportPrompt();
 
@@ -1843,7 +1843,7 @@ public interface OdeMessages extends Messages {
   String projectUploadError();
 
   @DefaultMessage("The selected project is not a project source file!\n" +
-          "Project source files are aia files.")
+      "Project source files are aia files.")
   @Description("Error message reported when the file selected for upload is not a project archive.")
   String notProjectArchiveError();
 
@@ -1874,9 +1874,9 @@ public interface OdeMessages extends Messages {
   String labelMoreInfoLink();
 
   @DefaultMessage("App Inventor will send you a notification "
-          + "when the apps you have posted are liked or downloaded. "
-          + "Below, you can enable/disable this feature and you can "
-          + "specify how often you want to be notified")
+      + "when the apps you have posted are liked or downloaded. "
+      + "Below, you can enable/disable this feature and you can "
+      + "specify how often you want to be notified")
   @Description("label of email description")
   String labelEmailDescription();
 
@@ -1956,9 +1956,9 @@ public interface OdeMessages extends Messages {
   // Used in youngandroid/TextValidators.java
 
   @DefaultMessage("Project names must start with a letter and can contain only letters, " +
-          "numbers, and underscores")
+      "numbers, and underscores")
   @Description("Error message when project name does not start with a letter or contains a " +
-          "character that is not a letter, number, or underscore.")
+      "character that is not a letter, number, or underscore.")
   String malformedProjectNameError();
 
   @DefaultMessage("{0} already exists. You cannot create another project with the same name.")
@@ -1980,7 +1980,7 @@ public interface OdeMessages extends Messages {
   // Used in youngandroid/YoungAndroidFormUpgrader.java
 
   @DefaultMessage("This project was created with an older version of the App Inventor " +
-          "system and was upgraded.\n{0}")
+      "system and was upgraded.\n{0}")
   @Description("Alert message displayed when a project is upgraded")
   String projectWasUpgraded(String details);
 
@@ -1989,12 +1989,12 @@ public interface OdeMessages extends Messages {
   String unexpectedProblem(String details);
 
   @DefaultMessage("This project was saved with a newer version of the App Inventor system. We " +
-          "will attempt to load the project, but there may be compatibility issues.")
+      "will attempt to load the project, but there may be compatibility issues.")
   @Description("Alert message displayed when project is newer than system")
   String newerVersionProject();
 
   @DefaultMessage("This project was saved with an early pre-release version of the App Inventor " +
-          "system. We will attempt to load the project, but there may be compatibility issues.")
+      "system. We will attempt to load the project, but there may be compatibility issues.")
   @Description("Alert message displayed when upgrading a project without version numbers")
   String veryOldProject();
 
@@ -2004,9 +2004,9 @@ public interface OdeMessages extends Messages {
 
   @DefaultMessage("Unable to load project with {0} version {1} (maximum known version is {2}).")
   @Description("Exception message used when a project contains a newer version component than " +
-          "the version known by the system")
+      "the version known by the system")
   String newerVersionComponentException(String componentType, int srcCompVersion,
-                                        int sysCompVersion);
+      int sysCompVersion);
 
   @DefaultMessage("No upgrade strategy exists for {0} from version {1} to {2}.")
   @Description("Exception message used when a component was not upgraded")
@@ -2036,7 +2036,7 @@ public interface OdeMessages extends Messages {
 
   // This error message is displayed as HTML
   @DefaultMessage("App Inventor is unable to compile this project.  " +
-          "<br /> The compiler error output was <br /> {0}.")
+      "<br /> The compiler error output was <br /> {0}.")
   @Description("Compilation error, with error message.")
   String unableToCompile(String errorMesssage);
 
@@ -4130,10 +4130,6 @@ public interface OdeMessages extends Messages {
   @Description("")
   String WalkStepEvents();
 
-  @DefaultMessage("MagnitudeChanged")
-  @Description("")
-  String MagnitudeChangedEvents();
-
   @DefaultMessage("Completed")
   @Description("")
   String CompletedEvents();
@@ -5179,17 +5175,17 @@ public interface OdeMessages extends Messages {
   String CheckBoxHelpStringComponentPallette();
 
   @DefaultMessage("Non-visible component that provides the instant in time "
-          + "using the internal clock on the phone. It can fire a timer at "
-          + "regularly set intervals and perform time calculations, "
-          + "manipulations, and conversions.</p> <p>Methods to convert an "
-          + "instant to text are also available. Acceptable patterns are "
-          + "empty string, MM/DD/YYYY HH:mm:ss a, or MMM d, yyyy "
-          + "HH:mm. The empty string will provide the default format, "
-          + "which is \"MMM d, yyyy HH:mm:ss a\" for FormatDateTime \"MMM "
-          + "d, yyyy\" for FormatDate.  To see all possible format, "
-          + "please see <a "
-          + "href=\"https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html\" "
-          + "target=\"_blank\"> here</a>.")
+    + "using the internal clock on the phone. It can fire a timer at "
+    + "regularly set intervals and perform time calculations, "
+    + "manipulations, and conversions.</p> <p>Methods to convert an "
+    + "instant to text are also available. Acceptable patterns are "
+    + "empty string, MM/DD/YYYY HH:mm:ss a, or MMM d, yyyy "
+    + "HH:mm. The empty string will provide the default format, "
+    + "which is \"MMM d, yyyy HH:mm:ss a\" for FormatDateTime \"MMM "
+    + "d, yyyy\" for FormatDate.  To see all possible format, "
+    + "please see <a "
+    + "href=\"https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html\" "
+    + "target=\"_blank\"> here</a>.")
   @Description("")
   String ClockHelpStringComponentPallette();
 
@@ -5326,11 +5322,11 @@ public interface OdeMessages extends Messages {
   String SharingHelpStringComponentPallette();
 
   @DefaultMessage("A Slider is a progress bar that adds a draggable thumb. You can touch " +
-          "the thumb and drag left or right to set the slider thumb position. " +
-          "As the Slider thumb is dragged, it will trigger the PositionChanged event, " +
-          "reporting the position of the Slider thumb. The reported position of the " +
-          "Slider thumb can be used to dynamically update another component " +
-          "attribute, such as the font size of a TextBox or the radius of a Ball.")
+        "the thumb and drag left or right to set the slider thumb position. " +
+        "As the Slider thumb is dragged, it will trigger the PositionChanged event, " +
+        "reporting the position of the Slider thumb. The reported position of the " +
+        "Slider thumb can be used to dynamically update another component " +
+        "attribute, such as the font size of a TextBox or the radius of a Ball.")
   @Description("")
   String SliderHelpStringComponentPallette();
 
@@ -5407,10 +5403,10 @@ public interface OdeMessages extends Messages {
   String YandexTranslateHelpStringComponentPallette();
 
   @DefaultMessage("A non-visible component allowing you to store data on a Web database powered by Firebase. " +
-          "This allows the users of your app to share data with each other. " +
-          "By default, data will be stored in App Inventor''s shared Firebase database. " +
-          "Otherwise, you can specify the URL for your own Firebase in the \"FirebaseURL\" property. " +
-          "Learn more at <a target=\"_blank\" href=\"http://www.firebase.com\">Firebase.com</a>.")
+      "This allows the users of your app to share data with each other. " +
+      "By default, data will be stored in App Inventor''s shared Firebase database. " +
+      "Otherwise, you can specify the URL for your own Firebase in the \"FirebaseURL\" property. " +
+      "Learn more at <a target=\"_blank\" href=\"http://www.firebase.com\">Firebase.com</a>.")
   @Description("")
   String FirebaseDBHelpStringComponentPallette();
 
@@ -5421,9 +5417,9 @@ public interface OdeMessages extends Messages {
   String createNoProjectsDialogText();
 
   @DefaultMessage("You do not have any projects in App Inventor 2. " +
-          "To learn how to use App Inventor, click the \"Guide\" " +
-          "link at the top of the window; or to start your first project, " +
-          "click the \"Start New Project\" button at the upper left of the window.")
+      "To learn how to use App Inventor, click the \"Guide\" " +
+      "link at the top of the window; or to start your first project, " +
+      "click the \"Start New Project\" button at the upper left of the window.")
   @Description("")
   String createNoProjectsDialogMessage1();
 
@@ -5468,16 +5464,16 @@ public interface OdeMessages extends Messages {
   String invalidSessionDialogText();
 
   @DefaultMessage("<p><font color=red>Warning:</font> This session is out of date.</p>" +
-          "<p>This App Inventor account has been opened from another location. " +
-          "Using a single account from more than one location at the same time " +
-          "can damage your projects.</p>" +
-          "<p>Choose one of the buttons below to:" +
-          "<ul>" +
-          "<li>End this session here.</li>" +
-          "<li>Make this the current session and make the other sessions out of date.</li>" +
-          "<li>Continue with both sessions.</li>" +
-          "</ul>" +
-          "</p>")
+                "<p>This App Inventor account has been opened from another location. " +
+                "Using a single account from more than one location at the same time " +
+                "can damage your projects.</p>" +
+                "<p>Choose one of the buttons below to:" +
+                "<ul>" +
+                "<li>End this session here.</li>" +
+                "<li>Make this the current session and make the other sessions out of date.</li>" +
+                "<li>Continue with both sessions.</li>" +
+                "</ul>" +
+                "</p>")
   @Description("")
   String invalidSessionDialogMessage();
 
@@ -5498,15 +5494,15 @@ public interface OdeMessages extends Messages {
   String bashWarningDialogText();
 
   @DefaultMessage("<p><font color=red>WARNING:</font> A second App " +
-          "Inventor session has been opened for this account. You may choose to " +
-          "continue with both sessions, but working with App Inventor from more " +
-          "than one session simultaneously can cause blocks to be lost in ways " +
-          "that cannot be recovered from the App Inventor server.</p><p>" +
-          "We recommend that people not open multiple sessions on the same " +
-          "account. But if you do need to work in this way, then you should " +
-          "regularly export your project to your local computer, so you will " +
-          "have a backup copy independent of the App Inventor server. Use " +
-          "\"Export\" from the Projects menu to export the project.</p>")
+                "Inventor session has been opened for this account. You may choose to " +
+                "continue with both sessions, but working with App Inventor from more " +
+                "than one session simultaneously can cause blocks to be lost in ways " +
+                "that cannot be recovered from the App Inventor server.</p><p>" +
+                "We recommend that people not open multiple sessions on the same " +
+                "account. But if you do need to work in this way, then you should " +
+                "regularly export your project to your local computer, so you will " +
+                "have a backup copy independent of the App Inventor server. Use " +
+                "\"Export\" from the Projects menu to export the project.</p>")
   @Description("")
   String bashWarningDialogMessage();
 
@@ -5535,8 +5531,8 @@ public interface OdeMessages extends Messages {
   String corruptionDialogText();
 
   @DefaultMessage("<p><b>We detected errors while reading in your project</b></p>" +
-          "<p>To protect your project from damage, we have ended this session. You may close this " +
-          "window.</p>")
+                "<p>To protect your project from damage, we have ended this session. You may close this " +
+                "window.</p>")
   @Description("")
   String corruptionDialogMessage();
 
@@ -5545,11 +5541,11 @@ public interface OdeMessages extends Messages {
   String blocksTruncatedDialogText();
 
   @DefaultMessage("<p>It appears that <b>" + "%1" +
-          "</b> has had all blocks removed.</p><p>" +
-          "<ul><li>You can save the enpty screen, and then all those blocks will be " +
-          "permanently gone from the project.</li>" +
-          "<li>Alternatively, you can restore the previously saved version " +
-          "of the project.</li></ul></p>")
+      "</b> has had all blocks removed.</p><p>" +
+      "<ul><li>You can save the enpty screen, and then all those blocks will be " +
+      "permanently gone from the project.</li>" +
+      "<li>Alternatively, you can restore the previously saved version " +
+      "of the project.</li></ul></p>")
   @Description("")
   String blocksTruncatedDialogMessage();
 
@@ -5718,7 +5714,7 @@ public interface OdeMessages extends Messages {
   String XMLTextDecodeMethods();
 
   @DefaultMessage("ExtraKey and ExtraValue are deprecated and will not be supported. " +
-          "Please use the new Extras property in Blocks.\n")
+      "Please use the new Extras property in Blocks.\n")
   @Description("")
   String extraKeyValueWarning();
 
@@ -5751,8 +5747,8 @@ public interface OdeMessages extends Messages {
   String useFrontDeprecated();
 
   @DefaultMessage("FirebaseDB is an experimental feature " +
-          "which may change in the future or break. Packaged Apps built with this component may not " +
-          "function into the indefinite future.")
+    "which may change in the future or break. Packaged Apps built with this component may not " +
+    "function into the indefinite future.")
   @Description("")
   String firebaseExperimentalWarning();
 

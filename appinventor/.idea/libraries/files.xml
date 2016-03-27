@@ -1,0 +1,31 @@
+<component name="libraryTable">
+  <library name="files">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/httpcore-4.3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/Barcode.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/google-api-client-android2-beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/google-api-client-beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/acra-4.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/fusiontables.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/twitter4jmedia.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/google-http-client-beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/httpmime-4.3.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/guava-14.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/AndroidRuntime.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/CommonVersion.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/google-http-client-android3-beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/gson-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/twitter4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/firebase.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/dx.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/google-oauth-client-beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/android.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/google-http-client-android2-beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/kawa.jar!/" />
+      <root url="jar://$PROJECT_DIR$/buildserver/build/classes/BuildServer/files/core.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

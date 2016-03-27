@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/appengine/appengine-java-sdk-1.9.17/lib/appengine-remote-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/appengine/appengine-java-sdk-1.9.17/lib/appengine-tools-api.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

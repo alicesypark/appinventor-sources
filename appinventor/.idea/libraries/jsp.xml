@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jsp">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/appengine/appengine-java-sdk-1.9.17/lib/tools/jsp/repackaged-appengine-jakarta-standard-1.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/appengine/appengine-java-sdk-1.9.17/lib/tools/jsp/repackaged-appengine-jasper-jdt-6.0.29.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/appengine/appengine-java-sdk-1.9.17/lib/tools/jsp/repackaged-appengine-jakarta-jstl-1.1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

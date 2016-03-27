@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="components">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/components/AndroidRuntime.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/components/CommonConstants.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/components/Barcode.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/components/CommonConstants-gwt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

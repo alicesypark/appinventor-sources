@@ -281,9 +281,7 @@ public final class VideoPlayer extends AndroidViewComponent implements
 
   @SimpleFunction(
       description = "Seeks to the requested time (specified in milliseconds) in the video. " +
-      "If the video is paused, the frame shown will not be updated by the seek. " +
-      "The player can jump only to key frames in the video, so seeking to times that " +
-      "differ by short intervals may not actually move to different frames.")
+      "Note that if the video is paused, the frame shown will not be updated by the seek. ")
   public void SeekTo(int ms) {
     Log.i("VideoPlayer", "Calling SeekTo");
     if (ms < 0) {

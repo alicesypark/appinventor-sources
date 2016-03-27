@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/common/CommonUtils-gwt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/common/CommonTestUtils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/common/CommonUtils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/common/BlocksEditorHttpConstants.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/common/BlocksEditorHttpConstants-gwt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/common/CommonVersion-gwt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/common/CommonVersion.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

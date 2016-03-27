@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="v13">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/appengine/appengine-java-sdk-1.9.17/lib/opt/user/appengine-endpoints/v1/appengine-endpoints-deps.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/appengine/appengine-java-sdk-1.9.17/lib/opt/user/appengine-endpoints/v1/appengine-endpoints.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

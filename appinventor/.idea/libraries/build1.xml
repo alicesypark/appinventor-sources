@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="build1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/appengine/build/AiRebindLib.jar!/" />
+      <root url="jar://$PROJECT_DIR$/appengine/build/AiServerLib.jar!/" />
+      <root url="jar://$PROJECT_DIR$/appengine/build/AiSharedLib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="appengine-datastore-filter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/appengine/appengine-java-sdk-1.9.17/lib/opt/tools/appengine-datastore/v1/appengine-datastore-filter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

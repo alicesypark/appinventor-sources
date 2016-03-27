@@ -160,17 +160,9 @@ public abstract class FileEditor extends Composite {
    *
    * @param newLanguage
    *          The desired new language setting
-   * @param formName
+//   * @param formName
    */
   public void switchLanguage(String newLanguage) {
-  }
-
-  /**
-   * Trigger and Update of the Companion.
-   *
-   */
-
-  public void updateCompanion() {
   }
 
 }
